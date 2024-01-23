@@ -15,12 +15,12 @@ LiquidCrystal_I2C lcd(ende,col,lin); // Chamada da funcação LiquidCrystal para
 // 54 ate 59 B   63 on 64 off
 
 /**  Button Config
-      ---------
-      | 1    2 |
-      |        |
-      |        |
-      | 3    4 |
-      ---------
+      ------------------
+      | 1    2   3   4 |
+      |                |
+      |                |
+      | 3    4   5   6 |
+      ------------------
 */
 
 // configure buttons
@@ -140,11 +140,13 @@ void button1LongPressStart() {
   if(stompMode == false) {
       if(afinadorMode == false){
         afinadorMode = true;
+        lcd.clear();
         lcd.setCursor(0,0); 
         lcd.print("AFIN");
         MIDI.sendControlChange(60, 64, 1);
       }else{
         afinadorMode = false;
+        lcd.clear();
         lcd.setCursor(0,0); 
         lcd.print("    ");
         MIDI.sendControlChange(60, 63, 1);
