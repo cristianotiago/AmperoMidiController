@@ -46,20 +46,22 @@ const int efeitosMatrix[2][6] = {
                       };
 
 
-boolean btnA1= false;
-boolean btnA2= false;
-boolean btnA3= false;
-boolean btnA4= false;
-boolean btnA5= false;
-boolean btnA6= false;
+boolean btnA1= true;
+boolean btnA2= true;
+boolean btnA3= true;
+boolean btnA4= true;
+boolean btnA5= true;
+boolean btnA6= true;
 
-boolean btnB1= false;
-boolean btnB2= false;
-boolean btnB3= false;
-boolean btnB4= false;
-boolean btnB5= false;
-boolean btnB6= false;
+boolean btnB1= true;
+boolean btnB2= true;
+boolean btnB3= true;
+boolean btnB4= true;
+boolean btnB5= true;
+boolean btnB6= true;
 
+
+boolean naoEhAouB = true;
 #include "ModoStomp.h"
 
 void setup() {
@@ -104,18 +106,18 @@ void setup() {
   lcd.clear(); // Serve para limpar a tela do display
   
   seletorStomp(
-       false,
-       false,
-       false,
-       false,
-       false,
-       false,
-       false,
-       false,
-       false,
-       false,
-       false,
-       false);
+       true,
+       true,
+       true,
+       true,
+       true,
+       true,
+       true,
+       true,
+       true,
+       true,
+       true,
+       true);
 }
 
 void loop() {
@@ -134,39 +136,13 @@ void loop() {
 
 
 void button1Press() {
-  if(modoAB == false){
-    modoAB = true;
-    /* seletorStomp(
-       btnA1,
-       btnA2,
-       btnA3,
-       btnA4,
-       btnA5,
-       btnA6,
-       btnB1,
-       btnB2,
-       btnB3,
-       btnB4,
-       btnB5,
-       btnB6);*/
-  }else if(modoAB == true){
-    modoAB = false;
-    /* seletorStomp(
-       btnA1,
-       btnA2,
-       btnA3,
-       btnA4,
-       btnA5,
-       btnA6,
-       btnB1,
-       btnB2,
-       btnB3,
-       btnB4,
-       btnB5,
-       btnB6);*/
-  }
-}
+   if (naoEhAouB == true){
+      naoEhAouB = false;
+   }else{
+      naoEhAouB = true;  
+   }
 
+}
 void button1LongPressStart() {
 
  
@@ -185,85 +161,23 @@ void button2LongPressStart() {
 //{54, 55, 56, 57, 58 , 59 }  //B1 B2 B3 B4 B4 B6
 
 void button3Press() {
-   
-   if(modoAB == false && btnA1 == true){
-       //lcd.setCursor(0,1); 
-      // lcd.print(" A1 A2 A3 A4 A5 A6< ");
-      seletorStomp(
-       btnA1,
-       btnA2,
-       btnA3,
-       btnA4,
-       btnA5,
-       btnA6,
-       btnB1,
-       btnB2,
-       btnB3,
-       btnB4,
-       btnB5,
-       btnB6);
-       btnA1 = false;
-
-      MIDI.sendControlChange(48, 63, 1); 
-   }else if ( modoAB == false && btnA1 == false){
-      //lcd.setCursor(0,1); 
-      //lcd.print(" AA A2 A3 A4 A5 A6< ");
-         seletorStomp(
-       btnA1,
-       btnA2,
-       btnA3,
-       btnA4,
-       btnA5,
-       btnA6,
-       btnB1,
-       btnB2,
-       btnB3,
-       btnB4,
-       btnB5,
-       btnB6);
-      btnA1 = true;
-      MIDI.sendControlChange(48, 64, 1); 
+   if (naoEhAouB == true){
+      if(btnA1 == true){
+        btnA1 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnA1 == false){
+        btnA1 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
+   } else if(naoEhAouB == false){
+      if(btnB1 == true){
+        btnB1 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnB1 == false){
+        btnB1 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
    }
- /*
-  if(modoAB == true && btnB1 == true){
-       //lcd.setCursor(0,2); 
-       //lcd.print(" B1 B2 B3 B4 B5 B6< ");
-        seletorStomp(
-       btnA1,
-       btnA2,
-       btnA3,
-       btnA4,
-       btnA5,
-       btnA6,
-       btnB1,
-       btnB2,
-       btnB3,
-       btnB4,
-       btnB5,
-       btnB6);
-       btnB1 = false;
-      MIDI.sendControlChange(54, 63, 1); 
-   }else if (modoAB == true && btnB1 == false){
-      //lcd.setCursor(0,2); 
-      //lcd.print(" BB B2 B3 B4 B5 B6< ");
-       seletorStomp(
-       btnA1,
-       btnA2,
-       btnA3,
-       btnA4,
-       btnA5,
-       btnA6,
-       btnB1,
-       btnB2,
-       btnB3,
-       btnB4,
-       btnB5,
-       btnB6);   
-      btnB1 = true;
-      MIDI.sendControlChange(54, 64, 1); 
-   }
-  */
-
 }
 
 void button3LongPressStart() {
@@ -271,11 +185,24 @@ void button3LongPressStart() {
 }
 
 void button4Press() {
-  
- //MIDI.sendControlChange(55, 64, 1); 
- //MIDI.sendControlChange(56, 64, 1); 
- //MIDI.sendControlChange(57, 64, 1); 
- //MIDI.sendControlChange(58, 64, 1); 
+   if (naoEhAouB == true){
+      if(btnA2 == true){
+        btnA2 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnA1 == false){
+        btnA2 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
+   } else if(naoEhAouB == false){
+      if(btnB2 == true){
+        btnB2 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnB2 == false){
+        btnB2 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
+   }
+
 }
 
 void button4LongPressStart() {
@@ -283,12 +210,24 @@ void button4LongPressStart() {
 }
 
 
-
 void button5Press() {
-   //MIDI.sendControlChange(55, 63, 1); 
-   //MIDI.sendControlChange(56, 63, 1); 
-   //MIDI.sendControlChange(57, 63, 1); 
-   //MIDI.sendControlChange(58, 63, 1); 
+   if (naoEhAouB == true){
+      if(btnA3 == true){
+        btnA3 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnA1 == false){
+        btnA3 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
+   } else if(naoEhAouB == false){
+      if(btnB3 == true){
+        btnB3 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnB3 == false){
+        btnB3 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
+   }
 
 }
 
@@ -298,7 +237,24 @@ void button5LongPressStart() {
 }
 
 void button6Press() {
- 
+   if (naoEhAouB == true){
+      if(btnA4 == true){
+        btnA4 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnA4 == false){
+        btnA4 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
+   } else if(naoEhAouB == false){
+      if(btnB4 == true){
+        btnB4 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnB4 == false){
+        btnB4 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
+   }
+
 }
 
 void button6LongPressStart() {
@@ -307,8 +263,24 @@ void button6LongPressStart() {
 
 
 void button7Press() {
- 
- 
+   if (naoEhAouB == true){
+      if(btnA5 == true){
+        btnA5 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnA5 == false){
+        btnA5 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
+   } else if(naoEhAouB == false){
+      if(btnB5 == true){
+        btnB5 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnB5 == false){
+        btnB5 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
+   }
+
 }
 
 void button7LongPressStart() {
@@ -317,9 +289,26 @@ void button7LongPressStart() {
 }
 
 void button8Press() {
-  
- 
+   if (naoEhAouB == true){
+      if(btnA6 == true){
+        btnA6 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnA6 == false){
+        btnA6 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
+   } else if(naoEhAouB == false){
+      if(btnB6 == true){
+        btnB6 = false;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }else if(btnB6 == false){
+        btnB6 = true;
+        seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6);
+      }
+   }
+
 }
+
 
 void button8LongPressStart() {
   

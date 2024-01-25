@@ -19,11 +19,24 @@ void seletorStomp(
       boolean btnB4,
       boolean btnB5,
       boolean btnB6){
-      String A = (btnA1 == true ? "AA" : "A1"); 
-      //String B = (btnB1 == true ? "BA" : "B1"); 
-       lcd.setCursor(0,1); 
-       lcd.print(" "+String(A)+" A2 A3 A4 A5 A6");
-       //lcd.setCursor(0,2); 
-       //lcd.print(" "+String(B)+" B2 B3 B4 B5 B6");
+      String aA1 = (btnA1 == true ? "AA" : "A1"); 
+      String aA2 = (btnA2 == true ? "AB" : "A2"); 
+      String aA3 = (btnA3 == true ? "AC" : "A3"); 
+      String aA4 = (btnA4 == true ? "AD" : "A4"); 
+      String aA5 = (btnA5 == true ? "AE" : "A5"); 
+      String aA6 = (btnA6 == true ? "AF" : "A6"); 
+
+      String bB1 = (btnB1 == true ? "BA" : "B1"); 
+      String bB2 = (btnB2 == true ? "BB" : "B2"); 
+      String bB3 = (btnB3 == true ? "BC" : "B3"); 
+      String bB4 = (btnB4 == true ? "BD" : "B4"); 
+      String bB5 = (btnB5 == true ? "BE" : "B5"); 
+      String bB6 = (btnB6 == true ? "BF" : "B6"); 
+      
+
+      lcd.setCursor(0,1); 
+      lcd.print(" "+String(aA1)+" "+String(aA2)+" "+String(aA3)+" "+String(aA4)+" "+String(aA5)+" "+String(aA6));
+      lcd.setCursor(0,2); 
+      lcd.print(" "+String(bB1)+" "+String(bB2)+" "+String(bB3)+" "+String(bB4)+" "+String(bB5)+" "+String(bB6));
      
 }
