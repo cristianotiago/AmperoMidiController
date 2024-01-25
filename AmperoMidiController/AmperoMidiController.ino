@@ -1,8 +1,8 @@
-
-
 #include <OneButton.h>
 #include <MIDI.h>
 #include <LiquidCrystal_I2C.h> // Biblioteca utilizada para fazer a comunicação com o display 20x4 
+
+
 
 #define col 20 // Serve para definir o numero de colunas do display utilizado
 #define lin  4 // Serve para definir o numero de linhas do display utilizado
@@ -37,7 +37,7 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 
 boolean afinadorMode = false;
 boolean stompMode = false;
-boolean  modoAB = false;
+boolean modoAB = false;
 
 const int efeitosMatrix[2][6] = {
 
@@ -46,19 +46,21 @@ const int efeitosMatrix[2][6] = {
                       };
 
 
-boolean btnA1= true;
-boolean btnA2= true;
-boolean btnA3= true;
-boolean btnA4= true;
-boolean btnA5= true;
-boolean btnA6= true;
+boolean btnA1= false;
+boolean btnA2= false;
+boolean btnA3= false;
+boolean btnA4= false;
+boolean btnA5= false;
+boolean btnA6= false;
 
-boolean btnB1= true;
-boolean btnB2= true;
-boolean btnB3= true;
-boolean btnB4= true;
-boolean btnB5= true;
-boolean btnB6= true;
+boolean btnB1= false;
+boolean btnB2= false;
+boolean btnB3= false;
+boolean btnB4= false;
+boolean btnB5= false;
+boolean btnB6= false;
+
+#include "ModoStomp.h"
 
 void setup() {
 
@@ -100,6 +102,20 @@ void setup() {
   lcd.init(); // Serve para iniciar a comunicação com o display já conectado
   lcd.backlight(); // Serve para ligar a luz do display
   lcd.clear(); // Serve para limpar a tela do display
+  
+  seletorStomp(
+       false,
+       false,
+       false,
+       false,
+       false,
+       false,
+       false,
+       false,
+       false,
+       false,
+       false,
+       false);
 }
 
 void loop() {
@@ -112,92 +128,57 @@ void loop() {
   button6.tick();
   button7.tick();
   button8.tick();
-  
+ 
 }
 
 
 
 void button1Press() {
-  // banco +
-   if(stompMode == false) {
-      MIDI.sendControlChange(27, 0, 1);
-   }else{
-       if (modoAB == false){
-        lcd.setCursor(0,3); 
-        lcd.print("MOD-A");
-           modoAB = true;
-      }else{
-        lcd.setCursor(0,3); 
-        lcd.print("MOD-B");
-           modoAB = false;
-      }
-
-   }
+  if(modoAB == false){
+    modoAB = true;
+    /* seletorStomp(
+       btnA1,
+       btnA2,
+       btnA3,
+       btnA4,
+       btnA5,
+       btnA6,
+       btnB1,
+       btnB2,
+       btnB3,
+       btnB4,
+       btnB5,
+       btnB6);*/
+  }else if(modoAB == true){
+    modoAB = false;
+    /* seletorStomp(
+       btnA1,
+       btnA2,
+       btnA3,
+       btnA4,
+       btnA5,
+       btnA6,
+       btnB1,
+       btnB2,
+       btnB3,
+       btnB4,
+       btnB5,
+       btnB6);*/
+  }
 }
 
 void button1LongPressStart() {
-  // afinador
-  if(stompMode == false) {
-      if(afinadorMode == false){
-        afinadorMode = true;
-        lcd.clear();
-        lcd.setCursor(0,0); 
-        lcd.print("AFIN");
-        MIDI.sendControlChange(60, 64, 1);
-      }else{
-        afinadorMode = false;
-        lcd.clear();
-        lcd.setCursor(0,0); 
-        lcd.print("    ");
-        MIDI.sendControlChange(60, 63, 1);
-      }
-      
-   }else{
 
-   
-   }
-
-  
-
-  
+ 
 }
 
 
 void button2Press() {
-  // banco -
-   if(stompMode == false) {
-    MIDI.sendControlChange(26, 0, 1);
-   }else{
-      if (modoAB == false){
-        lcd.setCursor(0,3); 
-        lcd.print("MOD-A");
-           modoAB = true;
-      }else{
-        lcd.setCursor(0,3); 
-        lcd.print("MOD-B");
-           modoAB = false;
-      }
-   }
-
+ 
 }
 
 void button2LongPressStart() {
-    if(stompMode == false){
-      stompMode = true;
-      lcd.setCursor(0,0); 
-      lcd.print("STMP");
-      lcd.setCursor(0,1); 
-      lcd.print("A1 A2 A3 A4 A5 A6");
-      lcd.setCursor(0,2); 
-      lcd.print("B1 B2 B3 B4 B5 B6");
-      //mudar tela para o mdo stomp
-      MIDI.sendControlChange(28, 63, 1); 
-    }else{
-      stompMode = false;
-      lcd.setCursor(0,0); 
-      lcd.print("    ");
-      MIDI.sendControlChange(28, 64, 1); 
-    }
+  
 }
 
 //{48, 49, 50, 51, 52 , 53 }, //A1 A2 A3 A4 A5 A6
@@ -205,30 +186,83 @@ void button2LongPressStart() {
 
 void button3Press() {
    
-   if(stompMode==true && modoAB == false && btnA1 == true){
-       lcd.setCursor(0,1); 
-       lcd.print("A1 A2 A3 A4 A5 A6");
+   if(modoAB == false && btnA1 == true){
+       //lcd.setCursor(0,1); 
+      // lcd.print(" A1 A2 A3 A4 A5 A6< ");
+      seletorStomp(
+       btnA1,
+       btnA2,
+       btnA3,
+       btnA4,
+       btnA5,
+       btnA6,
+       btnB1,
+       btnB2,
+       btnB3,
+       btnB4,
+       btnB5,
+       btnB6);
        btnA1 = false;
+
       MIDI.sendControlChange(48, 63, 1); 
-   }else if (stompMode==true && modoAB == false && btnA1 == false){
-      lcd.setCursor(0,1); 
-      lcd.print("AA A2 A3 A4 A5 A6");
+   }else if ( modoAB == false && btnA1 == false){
+      //lcd.setCursor(0,1); 
+      //lcd.print(" AA A2 A3 A4 A5 A6< ");
+         seletorStomp(
+       btnA1,
+       btnA2,
+       btnA3,
+       btnA4,
+       btnA5,
+       btnA6,
+       btnB1,
+       btnB2,
+       btnB3,
+       btnB4,
+       btnB5,
+       btnB6);
       btnA1 = true;
       MIDI.sendControlChange(48, 64, 1); 
    }
- 
-  if(stompMode==true && modoAB == true && btnB1 == true){
-       lcd.setCursor(0,2); 
-       lcd.print("B1 B2 B3 B4 B5 B6");
+ /*
+  if(modoAB == true && btnB1 == true){
+       //lcd.setCursor(0,2); 
+       //lcd.print(" B1 B2 B3 B4 B5 B6< ");
+        seletorStomp(
+       btnA1,
+       btnA2,
+       btnA3,
+       btnA4,
+       btnA5,
+       btnA6,
+       btnB1,
+       btnB2,
+       btnB3,
+       btnB4,
+       btnB5,
+       btnB6);
        btnB1 = false;
       MIDI.sendControlChange(54, 63, 1); 
-   }else if (stompMode==true && modoAB == true && btnB1 == false){
-      lcd.setCursor(0,2); 
-      lcd.print("BB B2 B3 B4 B5 B6");
+   }else if (modoAB == true && btnB1 == false){
+      //lcd.setCursor(0,2); 
+      //lcd.print(" BB B2 B3 B4 B5 B6< ");
+       seletorStomp(
+       btnA1,
+       btnA2,
+       btnA3,
+       btnA4,
+       btnA5,
+       btnA6,
+       btnB1,
+       btnB2,
+       btnB3,
+       btnB4,
+       btnB5,
+       btnB6);   
       btnB1 = true;
       MIDI.sendControlChange(54, 64, 1); 
    }
-  
+  */
 
 }
 
@@ -289,13 +323,5 @@ void button8Press() {
 
 void button8LongPressStart() {
   
-
-}
-
-void pedalVolume(){
-
-}
-
-void pedalExpressao(){
 
 }
