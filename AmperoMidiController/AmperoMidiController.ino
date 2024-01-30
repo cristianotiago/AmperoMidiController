@@ -39,13 +39,6 @@ boolean afinadorMode = false;
 boolean stompMode = false;
 boolean modoAB = false;
 
-const int efeitosMatrix[2][6] = {
-
-                        {48, 49, 50, 51, 52 , 53 }, //A1 A2 A3 A4 A5 A6
-                        {54, 55, 56, 57, 58 , 59 }  //B1 B2 B3 B4 B4 B6
-                      };
-
-
 boolean btnA1= true;
 boolean btnA2= true;
 boolean btnA3= true;
