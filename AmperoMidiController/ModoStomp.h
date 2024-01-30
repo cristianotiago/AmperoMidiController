@@ -1,11 +1,11 @@
-const int btnSelecionaveis[4][6] = {
+/*const int btnSelecionaveis[4][6] = {
 
                         {"A1", "A2", "A3", "A4", "A5", "A5" }, 
                         {"AA", "AB", "AC", "AD", "AE", "AF" }, 
                         {"B1", "B2", "B3", "B4", "B5", "B5" }, 
                         {"BA", "BB", "BC", "BD", "BE", "BF" } 
                       };
-
+*/
 void seletorStomp(
       boolean btnA1,
       boolean btnA2,
@@ -18,7 +18,9 @@ void seletorStomp(
       boolean btnB3,
       boolean btnB4,
       boolean btnB5,
-      boolean btnB6){
+      boolean btnB6,
+      boolean naoEhAouB){
+
       String aA1 = (btnA1 == true ? "AA" : "A1"); 
       String aA2 = (btnA2 == true ? "AB" : "A2"); 
       String aA3 = (btnA3 == true ? "AC" : "A3"); 
@@ -33,10 +35,13 @@ void seletorStomp(
       String bB5 = (btnB5 == true ? "BE" : "B5"); 
       String bB6 = (btnB6 == true ? "BF" : "B6"); 
       
-
       lcd.setCursor(0,1); 
-      lcd.print(" "+String(aA1)+" "+String(aA2)+" "+String(aA3)+" "+String(aA4)+" "+String(aA5)+" "+String(aA6));
+      lcd.print(" "+String(aA1)+" "+String(aA2)+" "+String(aA3)+" "+String(aA4)+" "+String(aA5)+" "+String(aA6)+String(naoEhAouB == true ? "<" : " "));
       lcd.setCursor(0,2); 
-      lcd.print(" "+String(bB1)+" "+String(bB2)+" "+String(bB3)+" "+String(bB4)+" "+String(bB5)+" "+String(bB6));
+      lcd.print(" "+String(bB1)+" "+String(bB2)+" "+String(bB3)+" "+String(bB4)+" "+String(bB5)+" "+String(bB6)+String(naoEhAouB != true ? "<" : " "));
      
+}
+
+void enviarControlChange(int controlNumber, int controlValue, int channel ){
+  MIDI.sendControlChange(controlNumber, controlValue, channel); 
 }
