@@ -46,7 +46,7 @@ void seletorStomp(
       String bB4 = (btnB4 == true ? "BD" : "B4"); 
       String bB5 = (btnB5 == true ? "BE" : "B5"); 
       String bB6 = (btnB6 == true ? "BF" : "B6"); 
-      
+      lcd.clear();
       lcd.setCursor(0,1); 
       lcd.print(" "+String(aA1)+" "+String(aA2)+" "+String(aA3)+" "+String(aA4)+" "+String(aA5)+" "+String(aA6)+String(naoEhAouB == true ? "<" : " "));
       lcd.setCursor(0,2); 

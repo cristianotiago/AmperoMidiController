@@ -4,11 +4,11 @@
 
 
 
-#define col 20 // Serve para definir o numero de colunas do display utilizado
-#define lin  4 // Serve para definir o numero de linhas do display utilizado
-#define ende  0x27 // Serve para definir o endereço do display.
+#define colunas 20 // Serve para definir o numero de colunas do display utilizado
+#define linhas  4 // Serve para definir o numero de linhas do display utilizado
+#define endereco  0x27 // Serve para definir o endereço do display.
 
-LiquidCrystal_I2C lcd(ende,col,lin); // Chamada da funcação LiquidCrystal para ser usada com o I2C
+LiquidCrystal_I2C lcd(endereco,colunas,linhas); // Chamada da funcação LiquidCrystal para ser usada com o I2C
 
 
 // 48 ate 53 A   63 on 64 off
@@ -59,6 +59,9 @@ boolean isStompMode = true;
 
 
 #include "ModoStomp.h"
+#include "LargeFonts.h"
+
+
 
 void setup() {
 
@@ -101,7 +104,14 @@ void setup() {
   lcd.backlight(); // Serve para ligar a luz do display
   lcd.clear(); // Serve para limpar a tela do display
   
+  for (nb=0; nb<8; nb++ ) {                     // create 8 custom characters
+    for (bc=0; bc<8; bc++) bb[bc]= pgm_read_byte( &custom[nb][bc] );
+    lcd.createChar ( nb+1, bb );
+  }
+  
   seletorStomp(true,true,true,true, true,true,true,true,true,true,true,true,true);
+
+  
 }
 
 void loop() {
@@ -121,7 +131,11 @@ void loop() {
 
 void button1Press() {
  //banco para cima
- enviarControlChange(27, 0, 1);
+  lcd.clear();
+  writeBigString("  B A N K", 0, 0);
+  writeBigString("      U P", 0, 2);
+  enviarControlChange(27, 0, 1);
+  //seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6,naoEhAouB);
 }
 void button1LongPressStart() {
    if (naoEhAouB == true){
@@ -137,17 +151,27 @@ void button1LongPressStart() {
 
 void button2Press() {
   //banco para baixo
+   lcd.clear();
+   
+   writeBigString("  B A N K", 0, 0);
+   writeBigString("      D N", 0, 2);
    enviarControlChange(26, 0, 1);
+   //seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6,naoEhAouB);
 }
 
 void button2LongPressStart() {
   //afinador
   if(afinadorMode==false){
     afinadorMode = true;
+     lcd.clear();
+     writeBigString("T U N E R", 0, 0);
      enviarControlChange(60, 64, 1);
   }else{
     afinadorMode = false;
-     enviarControlChange(60, 63, 1);
+    lcd.clear();
+    writeBigString("         ", 0, 0);
+    seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6,naoEhAouB);
+    enviarControlChange(60, 63, 1);
   }
 }
 
@@ -183,7 +207,7 @@ void button4Press() {
       if(btnA2 == true){
         btnA2 = false;
         seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6,naoEhAouB);
-      }else if(btnA1 == false){
+      }else if(btnA2 == false){
         btnA2 = true;
         seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6,naoEhAouB);
       }
@@ -209,7 +233,7 @@ void button5Press() {
       if(btnA3 == true){
         btnA3 = false;
         seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6,naoEhAouB);
-      }else if(btnA1 == false){
+      }else if(btnA3 == false){
         btnA3 = true;
         seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6,naoEhAouB);
       }
