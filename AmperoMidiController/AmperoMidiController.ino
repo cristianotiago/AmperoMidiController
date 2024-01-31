@@ -108,12 +108,20 @@ void setup() {
     for (bc=0; bc<8; bc++) bb[bc]= pgm_read_byte( &custom[nb][bc] );
     lcd.createChar ( nb+1, bb );
   }
-  
+  telaStart();
   seletorStomp(true,true,true,true, true,true,true,true,true,true,true,true,true);
 
   
 }
 
+void telaStart(){
+  
+   writeBigString("A M P E 2", 0, 0);
+   writeBigString(" M I D I", 0, 2);
+   delay(2000);
+   lcd.clear();
+
+}
 void loop() {
 
   button1.tick();
@@ -132,11 +140,12 @@ void loop() {
 void button1Press() {
  //banco para cima
   lcd.clear();
+ 
   writeBigString("  B A N K", 0, 0);
   writeBigString("      U P", 0, 2);
   enviarControlChange(27, 0, 1);
-  //seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6,naoEhAouB);
 }
+
 void button1LongPressStart() {
    if (naoEhAouB == true){
       naoEhAouB = false;
@@ -155,8 +164,7 @@ void button2Press() {
    
    writeBigString("  B A N K", 0, 0);
    writeBigString("      D N", 0, 2);
-   enviarControlChange(26, 0, 1);
-   //seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6,naoEhAouB);
+   enviarControlChange(26, 0, 1);  
 }
 
 void button2LongPressStart() {
@@ -164,12 +172,12 @@ void button2LongPressStart() {
   if(afinadorMode==false){
     afinadorMode = true;
      lcd.clear();
-     writeBigString("T U N E R", 0, 0);
+     writeBigString("T U N E R", 0, 1);
      enviarControlChange(60, 64, 1);
   }else{
     afinadorMode = false;
     lcd.clear();
-    writeBigString("         ", 0, 0);
+    writeBigString("         ", 0, 1);
     seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6,naoEhAouB);
     enviarControlChange(60, 63, 1);
   }
