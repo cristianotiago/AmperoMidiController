@@ -1,4 +1,4 @@
-Controlador MIDI para Ampero Stomp 2
+Controlador MIDI para Ampero Stomp 2:
 
 1 - Controlar bancos para cima ou para baixo
 
