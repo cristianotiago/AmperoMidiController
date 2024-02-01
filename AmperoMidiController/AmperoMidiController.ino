@@ -3,6 +3,15 @@
 #include <LiquidCrystal_I2C.h> // Biblioteca utilizada para fazer a comunicação com o display 20x4 
 
 
+int expPin1  = 0;
+int currentVal1 = 0;
+int lastVal1 =  0;
+
+
+int expPin2  = 0;
+int currentVal2 = 0;
+int lastVal2 =  0;
+
 
 #define colunas 20 // Serve para definir o numero de colunas do display utilizado
 #define linhas  4 // Serve para definir o numero de linhas do display utilizado
@@ -37,7 +46,13 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 
 boolean afinadorMode = false;
 boolean stompMode = false;
+boolean naoEhAouB = true;
+/*
 boolean modoAB = false;
+
+boolean isStompMode = true;
+*/
+
 
 boolean btnA1= true;
 boolean btnA2= true;
@@ -53,9 +68,6 @@ boolean btnB4= true;
 boolean btnB5= true;
 boolean btnB6= true;
 
-boolean naoEhAouB = true;
-
-boolean isStompMode = true;
 
 
 #include "ModoStomp.h"
@@ -117,10 +129,24 @@ void setup() {
 void telaStart(){
   
    writeBigString("A M P E 2", 0, 0);
-   writeBigString(" M I D I", 0, 2);
+   writeBigString("  M I D I", 0, 2);
    delay(2000);
    lcd.clear();
 
+}
+
+void isStomp(boolean valor){
+   stompMode= valor;
+}
+
+void ativarStomp( boolean valor){
+  if(stompMode==false){
+   MIDI.sendControlChange(28, 63, 1); 
+   isStomp(valor);
+  }else if(stompMode==true){
+       MIDI.sendControlChange(28, 64, 1); 
+       isStomp(valor);
+  }
 }
 void loop() {
 
@@ -132,9 +158,33 @@ void loop() {
   button6.tick();
   button7.tick();
   button8.tick();
- 
+ pedalExpressao();
+ pedalVolume();
 }
 
+void pedalExpressao(){
+  currentVal1 =  analogRead(expPin1);
+currentVal1 = map(currentVal1, 0, 1023 , 0,127);
+currentVal1 = constrain(currentVal1, 0, 127);
+if(abs(currentVal1-lastVal1)>1){
+   MIDI.sendControlChange(11,currentVal1,1);
+}
+
+lastVal1= currentVal1;
+delay(5);
+}
+
+void pedalVolume(){
+  currentVal2 =  analogRead(expPin2);
+currentVal2 = map(currentVal2, 0, 1023 , 0,127);
+currentVal2 = constrain(currentVal2, 0, 127);
+if(abs(currentVal2-lastVal2)>1){
+   MIDI.sendControlChange(7,currentVal2,1);
+}
+
+lastVal2= currentVal2;
+delay(5);
+}
 
 
 void button1Press() {
@@ -170,12 +220,12 @@ void button2Press() {
 void button2LongPressStart() {
   //afinador
   if(afinadorMode==false){
-    afinadorMode = true;
+   isAfinador(true);
      lcd.clear();
      writeBigString("T U N E R", 0, 1);
      enviarControlChange(60, 64, 1);
-  }else{
-    afinadorMode = false;
+  }else if (afinadorMode==true){
+    isAfinador(false);
     lcd.clear();
     writeBigString("         ", 0, 1);
     seletorStomp(btnA1, btnA2,btnA3,btnA4, btnA5,btnA6,btnB1, btnB2, btnB3,btnB4,btnB5, btnB6,naoEhAouB);
@@ -183,6 +233,9 @@ void button2LongPressStart() {
   }
 }
 
+void isAfinador( boolean valor){
+  afinadorMode = valor;
+}
 //{48, 49, 50, 51, 52 , 53 }, //A1 A2 A3 A4 A5 A6
 //{54, 55, 56, 57, 58 , 59 }  //B1 B2 B3 B4 B4 B6
 
