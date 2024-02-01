@@ -173,8 +173,8 @@ void pedalExpressao() {
 
 void pedalVolume() {
   currentVal2 = analogRead(expPin2);
-  currentVal2 = map(currentVal2, 0, 1023, 0, 127);
-  currentVal2 = constrain(currentVal2, 0, 127);
+  currentVal2 = map(currentVal2, 0, 1023, 0, 100);
+  currentVal2 = constrain(currentVal2, 0, 100);
   if (abs(currentVal2 - lastVal2) > 1) {
     MIDI.sendControlChange(7, currentVal2, 1);
   }
@@ -256,6 +256,17 @@ void button3Press() {
 }
 
 void button3LongPressStart() {
+
+
+  if (stompMode == false) {
+    ativarStomp(true);
+    lcd.clear();
+    writeBigString("S T O M P", 0, 1);
+  }else if(stompMode ==true){
+    ativarStomp(false);
+    lcd.clear();
+    writeBigString("P A T C H", 0, 1);
+  }
 }
 
 void button4Press() {
