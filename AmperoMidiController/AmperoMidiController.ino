@@ -7,11 +7,11 @@ int expPin1 = 0;
 int currentVal1 = 0;
 int lastVal1 = 0;
 
-
+/*
 int expPin2 = 0;
 int currentVal2 = 0;
 int lastVal2 = 0;
-
+*/
 
 #define colunas 20     // Serve para definir o numero de colunas do display utilizado
 #define linhas 4       // Serve para definir o numero de linhas do display utilizado
@@ -156,7 +156,7 @@ void loop() {
   button7.tick();
   button8.tick();
   pedalExpressao();
-  pedalVolume();
+  //pedalVolume();
 }
 
 void pedalExpressao() {
@@ -170,7 +170,7 @@ void pedalExpressao() {
   lastVal1 = currentVal1;
   delay(5);
 }
-
+/*
 void pedalVolume() {
   currentVal2 = analogRead(expPin2);
   currentVal2 = map(currentVal2, 0, 1023, 0, 100);
@@ -182,7 +182,7 @@ void pedalVolume() {
   lastVal2 = currentVal2;
   delay(5);
 }
-
+*/
 
 void button1Press() {
   //banco para cima
